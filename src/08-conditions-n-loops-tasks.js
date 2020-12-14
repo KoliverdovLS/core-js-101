@@ -398,8 +398,27 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const small = pathes[0];
+  const arrS = small.split('');
+  let lastCoincided = 0;
+  let isGo = true;
+  arrS.reduce((ac, el, index) => {
+    const isCoincided = pathes.reduce((acc, elem) => {
+      if (el === elem[index]) return acc + 1;
+      return 0;
+    }, 0);
+    if (isCoincided === pathes.length && isGo) {
+      lastCoincided = index + 1;
+    } else {
+      isGo = false;
+    }
+    return 1;
+  }, 0);
+  const BOJE = arrS.slice(0, lastCoincided).join('');
+  const PAMAGITE = BOJE.lastIndexOf('/');
+  if (lastCoincided === 0) return '';
+  return BOJE.slice(0, PAMAGITE !== -1 ? PAMAGITE + 1 : lastCoincided);
 }
 
 
@@ -421,8 +440,16 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const arr = new Array(m1.length).fill(new Array(m2[0].length).fill(0));
+  const arr2 = arr.map((el, h) => {
+    const arrIn = el.map((elIn, w) => {
+      const a = m2.reduce((ac, e, i) => ac + (m1[h][i] * m2[i][w]), 0);
+      return a;
+    });
+    return arrIn;
+  });
+  return arr2;
 }
 
 
@@ -456,8 +483,52 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const wert = [[], [], []];
+  const gor = [[], [], []];
+  const diog1 = [];
+  const diog2 = [];
+  position.map((element, H) => {
+    element.map((el, W) => {
+      if (el) {
+        gor[H].push(el);
+        wert[W].push(el);
+        if (H === W) {
+          diog1.push(el);
+        }
+        if (H === (2 - W)) {
+          diog2.push(el);
+        }
+      }
+      return 1;
+    });
+    return 1;
+  });
+  if (wert[0].join('') === 'XXX' || wert[0].join('') === '000') {
+    return wert[0][0];
+  }
+  if (wert[1].join('') === 'XXX' || wert[1].join('') === '000') {
+    return wert[1][0];
+  }
+  if (wert[2].join('') === 'XXX' || wert[2].join('') === '000') {
+    return wert[2][0];
+  }
+  if (gor[0].join('') === 'XXX' || gor[0].join('') === '000') {
+    return gor[0][0];
+  }
+  if (gor[1].join('') === 'XXX' || gor[1].join('') === '000') {
+    return gor[1][0];
+  }
+  if (gor[2].join('') === 'XXX' || gor[2].join('') === '000') {
+    return gor[2][0];
+  }
+  if (diog1.join('') === 'XXX' || diog1.join('') === '000') {
+    return diog1[0];
+  }
+  if (diog2.join('') === 'XXX' || diog2.join('') === '000') {
+    return diog2[0];
+  }
+  return undefined;
 }
 
 
